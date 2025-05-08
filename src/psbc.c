@@ -1,26 +1,54 @@
-#include "raylib/include/raylib.h"
+#include "./raylib/include/raylib.h"
 #include <stdlib.h>
 #include <stdio.h>
 // #include <math.h>
 
-// FONT SETTINGS
+#include "widgets.h"
+
+// FONT CONFIG
 #define FONT_NORM      "./res/fonts/calibri.ttf"
 #define FONT_NORM_SIZE 16
-#define FONT_NORM_SPC  5
+#define FONT_NORM_SPC  0
+
+// INNER WINDOWS' SIZE CONFIG
+#define WIN_STATS_W 500
+#define WIN_STATS_H 500
+#define WIN_STATS_OUTL_THIC 2
+#define WIN_STATS_PIVOT (Vector2){10, 10}
 
 // IMAGES
-#define IMG_STA        "./res/icons/STA.png"
-#define IMG_STR        "./res/icons/STR.png"
-#define IMG_AGI        "./res/icons/AGI.png"
-#define IMG_DEX        "./res/icons/DEX.png"
-#define IMG_SPI        "./res/icons/SPI.png"
-#define IMG_INT        "./res/icons/INT.png"
-#define IMG_LP         "./res/icons/LP.png"
-#define IMG_MP         "./res/icons/MP.png"
+// Icons
+#define PATH_IMG_STA        "./res/images/STA.png"
+#define PATH_IMG_STR        "./res/images/STR.png"
+#define PATH_IMG_AGI        "./res/images/AGI.png"
+#define PATH_IMG_DEX        "./res/images/DEX.png"
+#define PATH_IMG_SPI        "./res/images/SPI.png"
+#define PATH_IMG_INT        "./res/images/INT.png"
+#define PATH_IMG_LP         "./res/images/LP.png"
+#define PATH_IMG_MP         "./res/images/MP.png"
+// Buttons
+#define PATH_IMG_BTNS_UP    "./res/images/StatButton_up.png"
+#define PATH_IMG_BTNS_DOWN  "./res/images/StatButton_down.png"
+#define PATH_IMG_BTN1_NORM  "./res/images/Button_norm_1.png"
+#define PATH_IMG_BTN1_HOVER "./res/images/Button_hover_1.png"
+#define PATH_IMG_BTN1_PRESS "./res/images/Button_press_1.png"
+#define PATH_IMG_BTN2_NORM  "./res/images/Button_norm_2.png"
+#define PATH_IMG_BTN2_HOVER "./res/images/Button_hover_2.png"
+#define PATH_IMG_BTN2_PRESS "./res/images/Button_press_2.png"
+
+// MACROS
+#define DRAW_TEXT_NORM(text, posx, posy) \
+    DrawTextEx(FONT_NORMAL, text, (Vector2){posx, posy}, FONT_NORM_SIZE, FONT_NORM_SPC, CLR_WHITE); \
 
 // COLOR PALETTE
 const Color CLR_BLACK = {15, 15, 15, 255};
-const Color CLR_WHITE = {220, 220, 220, 255};
+const Color CLR_WHITE = {240, 240, 240, 255};
+const Color CLR_WIN_OUTL = {100, 100, 100, 255};
+
+
+//------------------------------------------------------------------------------------
+// Functions
+//------------------------------------------------------------------------------------
 
 
 
@@ -35,7 +63,14 @@ int main(void)
     const int screenHeight = 600;
 
     InitWindow(screenWidth, screenHeight, "Pandora Saga Build Calculator");
-    const Font font_normal = LoadFont(FONT_NORM);
+
+    const Font FONT_NORMAL = LoadFont(FONT_NORM);
+    const Texture2D IMG_LP = LoadTexture(PATH_IMG_LP);
+
+    Button btn_test;
+    btn_test.texture_norm  = LoadTexture(PATH_IMG_BTNS_UP);
+    btn_test.texture_press = LoadTexture(PATH_IMG_BTNS_DOWN);
+    btn_test.rect = (Rectangle){100, 50, 11, 11};
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -45,7 +80,8 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
+        if (is_button_clicked(&btn_test)) puts("kekw");
+
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -54,7 +90,14 @@ int main(void)
 
             ClearBackground(CLR_BLACK);
 
-            DrawTextEx(font_normal, "Hello Kekworld", (Vector2){10, 10}, FONT_NORM_SIZE, FONT_NORM_SPC, CLR_WHITE);
+            // Stats window layout
+            DrawRectangleLinesEx((Rectangle){WIN_STATS_PIVOT.x, WIN_STATS_PIVOT.y, 
+                    WIN_STATS_W, WIN_STATS_H}, WIN_STATS_OUTL_THIC, CLR_WIN_OUTL);
+            DRAW_TEXT_NORM("Frozen Tear", WIN_STATS_PIVOT.x + 10, WIN_STATS_PIVOT.y + 10);
+            DrawTexture(IMG_LP, WIN_STATS_PIVOT.x + 10, WIN_STATS_PIVOT.y + 30, WHITE);
+            SetShapesTexture(btn_test.texture_norm, btn_test.rect);
+
+            DrawRectangleRec(btn_test.rect, WHITE);
 
         EndDrawing();
         //----------------------------------------------------------------------------------

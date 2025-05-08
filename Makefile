@@ -2,7 +2,7 @@
 EXEC = -o out/psbc.exe
 
 # Define the source files
-SRC = src/psbc.c
+SRC = src/psbc.c src/widgets.c
 
 # Define any compile-time flags
 FLAGS_H = -Wall -Wextra -pedantic  # Hard flags
