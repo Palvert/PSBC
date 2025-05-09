@@ -27,8 +27,9 @@
 #define PATH_IMG_LP         "./res/images/LP.png"
 #define PATH_IMG_MP         "./res/images/MP.png"
 // Buttons
-#define PATH_IMG_BTNS_UP    "./res/images/StatButton_up.png"
-#define PATH_IMG_BTNS_DOWN  "./res/images/StatButton_down.png"
+#define PATH_IMG_BTNS_NORM  "./res/images/StatButton_norm.png"
+#define PATH_IMG_BTNS_HOVER "./res/images/StatButton_hover.png"
+#define PATH_IMG_BTNS_PRESS  "./res/images/StatButton_press.png"
 #define PATH_IMG_BTN1_NORM  "./res/images/Button_norm_1.png"
 #define PATH_IMG_BTN1_HOVER "./res/images/Button_hover_1.png"
 #define PATH_IMG_BTN1_PRESS "./res/images/Button_press_1.png"
@@ -68,9 +69,12 @@ int main(void)
     const Texture2D IMG_LP = LoadTexture(PATH_IMG_LP);
 
     Button btn_test;
-    btn_test.texture_norm  = LoadTexture(PATH_IMG_BTNS_UP);
-    btn_test.texture_press = LoadTexture(PATH_IMG_BTNS_DOWN);
-    btn_test.rect = (Rectangle){100, 50, 11, 11};
+    init_button(&btn_test, "", 100, 50, PATH_IMG_BTNS_NORM, PATH_IMG_BTNS_HOVER, PATH_IMG_BTNS_PRESS,
+                FONT_NORM, 0, 0, FONT_NORM_SIZE, FONT_NORM_SPC, CLR_WHITE);
+
+    Button btn_big;
+    init_button(&btn_big, "Test", 140, 50, PATH_IMG_BTN2_NORM, PATH_IMG_BTN2_HOVER, PATH_IMG_BTN2_PRESS,
+                FONT_NORM, 19, 4, FONT_NORM_SIZE, FONT_NORM_SPC, CLR_WHITE);
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -80,7 +84,8 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        if (is_button_clicked(&btn_test)) puts("kekw");
+        if (is_button_clicked(&btn_test)) puts("Stat button clicked");
+        if (is_button_clicked(&btn_big)) puts("Big button clicked!");
 
         //----------------------------------------------------------------------------------
 
@@ -95,9 +100,9 @@ int main(void)
                     WIN_STATS_W, WIN_STATS_H}, WIN_STATS_OUTL_THIC, CLR_WIN_OUTL);
             DRAW_TEXT_NORM("Frozen Tear", WIN_STATS_PIVOT.x + 10, WIN_STATS_PIVOT.y + 10);
             DrawTexture(IMG_LP, WIN_STATS_PIVOT.x + 10, WIN_STATS_PIVOT.y + 30, WHITE);
-            SetShapesTexture(btn_test.texture_norm, btn_test.rect);
 
-            DrawRectangleRec(btn_test.rect, WHITE);
+            draw_button(&btn_test);
+            draw_button(&btn_big);
 
         EndDrawing();
         //----------------------------------------------------------------------------------

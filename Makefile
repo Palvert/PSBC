@@ -5,7 +5,7 @@ EXEC = -o out/psbc.exe
 SRC = src/psbc.c src/widgets.c
 
 # Define any compile-time flags
-FLAGS_H = -Wall -Wextra -pedantic  # Hard flags
+FLAGS_H = -Wall -Wextra -pedantic -g  # Hard flags
 FLAGS_E = -Wall -Wextra            # Easy flags
 
 # RayLib
@@ -13,7 +13,7 @@ RAYLIB = -I src/raylib/include -L src/raylib/lib -lraylib -lopengl32 -lgdi32 -lw
 
 
 make:
-	gcc $(SRC) $(EXEC) $(FLAGS_E) $(RAYLIB)
+	gcc $(SRC) $(EXEC) $(FLAGS_H) $(RAYLIB)
 
 run:
 	make && start out/psbc.exe
