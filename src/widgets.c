@@ -9,8 +9,8 @@
 //---------------------------------------------------------------------------------
 void init_button(Button *btn, char *label_text, int posx, int posy, 
                  char *path_up, char *path_hover, char *path_down, char *font_path, 
-                 int label_posx, int label_posy, int font_size, int font_space, 
-                 Color font_color) {
+                 int label_posx, int label_posy, unsigned short font_size, 
+                 unsigned short font_space, Color font_color) {
     btn->texture_norm  = LoadTexture(path_up);
     btn->texture_hover = LoadTexture(path_hover);
     btn->texture_press = LoadTexture(path_down);
@@ -37,7 +37,7 @@ void draw_button(Button *btn) {
     }
 
     // Label
-    DrawTextEx(btn->font, btn->label_text, btn->label_position, btn->font_size, btn->font_space, btn->font_color); \
+    DrawTextEx(btn->font, btn->label_text, btn->label_position, btn->font_size, btn->font_space, btn->font_color);
 }
 
 bool is_button_clicked(Button *btn) {
@@ -47,3 +47,35 @@ bool is_button_clicked(Button *btn) {
         return false;
     }
 }
+
+
+//---------------------------------------------------------------------------------
+// LABEL
+//---------------------------------------------------------------------------------
+void init_label(Label *lbl, char* text, char *font, Vector2 position, 
+                unsigned short font_size, unsigned short font_space, Color font_color) {
+    lbl->text       = strdup(text);
+    if (!text) { perror("allocation failed! text assignment to label"); exit(0); }
+    strcpy(lbl->text, text);
+    lbl->font       = LoadFont(font); 
+    lbl->position   = position; 
+    lbl->font_size  = font_size; 
+    lbl->font_space = font_space; 
+    lbl->font_color = font_color;
+}
+
+void draw_label(Label *lbl) {
+    DrawTextEx(lbl->font, lbl->text, lbl->position, lbl->font_size, lbl->font_space, lbl->font_color);
+}
+
+void rename_label(Label *lbl, char *text) {
+    if (strlen(lbl->text) < strlen(text)) {
+        lbl->text = realloc(text, strlen(text) + 1);
+        if (!text) { perror("reallocation failed! rename label."); exit(0); }
+    }
+
+    strcpy(lbl->text, text);
+}
+
+
+
